@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "category": "Chairs",
+        "imgName": "broderna_andersson.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": false,
+            "light": true,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": true
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": true,
+            "minimalist": false,
+            "modern": false,
+            "farmhouse": false
+        }
+    },
+    {
+        "id": 2,
+        "category": "Chairs",
+        "imgName": "malli68_artek.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": false,
+            "light": true,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": true,
+            "minimalist": false,
+            "modern": false,
+            "farmhouse": true
+        }
+    },
+    {
+        "id": 3,
+        "category": "Chairs",
+        "imgName": "mallitu-612_jmerivaara.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": true,
+            "light": false,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": true,
+            "scandinavian": false,
+            "minimalist": false,
+            "modern": true,
+            "farmhouse": false
+        }
+    },
+    {
+        "id": 4,
+        "category": "Chairs",
+        "imgName": "oddense_maskinsnedkeri.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": true,
+            "light": false,
+            "colorful": false,
+            "earthy": true,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": false,
+            "minimalist": false,
+            "modern": false,
+            "farmhouse": true
+        }
+    },
+    {
+        "id": 5,
+        "category": "Chairs",
+        "imgName": "simoheikkila_artzan.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": false,
+            "light": true,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": false,
+            "minimalist": false,
+            "modern": false,
+            "farmhouse": true
+        }
+    },
+    {
+        "id": 6,
+        "category": "Chairs",
+        "imgName": "skaala472_avarte.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": true,
+            "light": false,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": true,
+            "scandinavian": false,
+            "minimalist": false,
+            "modern": true,
+            "farmhouse": false
+        }
+    }
+]

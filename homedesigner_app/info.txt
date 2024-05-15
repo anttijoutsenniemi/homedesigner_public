@@ -1,0 +1,9 @@
+-npx serve alottaa lokaaliin
+-npx ngrok http 3000 jakaa portin online
+-tarttee browseriin webxr pluginin
+
+-mobile link (tarttee vaihtaa aina ku hostaa uudestaan ngrokilla):
+https://7155-193-166-15-251.ngrok-free.app
+
+- mahdollisuus ladata referenssikuva minkä pohjalta chat ehdottaa huonekaluja
+- joku tutorial

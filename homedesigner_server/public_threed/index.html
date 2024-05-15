@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Homedesigner - Demo</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<!--All imports must be also specified here-->
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "./scripts/build/three.module.js",
+					"ARButton": "./scripts/jsm/webxr/ARButton.js",
+					"OrbitControls": "./scripts/jsm/controls/OrbitControls.js",
+					"GLTFLoader": "./scripts/jsm/loaders/GLTFLoader.js",
+					"RGBELoader": "./scripts/jsm/loaders/RGBELoader.js"
+				}
+			}
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	</head>
+	<body>
+
+		<div id="content">
+			<div id="mySidenav" class="sidenav">
+				<a href="javascript:void(0)" class="closebtn" id="closeNavBtn">&times;</a>
+				<a class="ar-object" id="1" href="#">Item_1</a>
+				<a class="ar-object" id="2" href="#">Item_2</a>
+				<a class="ar-object" id="3" href="#">Item_3</a>
+				<a class="ar-object" id="4" href="#">Item_4</a>
+				<a class="ar-object" id="5" href="#">Item_5</a>
+			  </div>
+			  
+			  <div id="container" style="position: fixed;"></div>
+			  
+			  <span id="openNavBtn" style="font-size:30px;cursor:pointer;position: absolute; font-family: 'Courier New', monospace;">&#9776; Homedesigner</span>
+
+			  <button type="button" id="place-button">PLACE</button>
+		</div>
+
+		<script src="./scripts/navigation.js"></script>
+
+		<script type="module" src="./scripts/threed.js"></script>
+
+	</body>
+</html>

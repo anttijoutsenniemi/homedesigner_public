@@ -1,0 +1,111 @@
+/* src/App.css */
+.chat-app-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('./assets/waves2.svg'); /* Replace with your image path */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.chat-wrapper {
+  width: 100%;
+  max-width: 600px; /* Narrow down on desktop */
+  max-height: 90%;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  overflow-y: scroll; /* Enable scroll if content overflows */
+}
+
+.chat-message {
+  display: flex;
+  justify-content: flex-start; /* Default alignment for chatbot messages */
+  margin-bottom: 20px;
+}
+
+.chat-message.user {
+  justify-content: flex-end; /* Align user messages to the right */
+}
+
+.chat-content {
+  display: flex;
+  align-items: flex-end; /* Align items at the bottom for a consistent look */
+}
+
+.chat-content > img:first-of-type {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+
+.chatbot-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.chat-bubble {
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #e0e0e0; /* Default color for chatbot */
+}
+
+.chat-message.user .chat-bubble {
+  background-color: #4caf50; /* Different color for user */
+  color: white;
+}
+
+.chat-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.chat-options button, .upload-image-button {
+  margin: 5px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #2196f3;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.camera-button, .gallery-button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.camera-button:hover, .gallery-button:hover {
+  background-color: #2196f3;
+}
+
+.upload-button {
+  padding: 10px 20px;
+  margin: 5px;
+  border-width: 2px;
+  border-color: gray;
+  background-color: transparent;
+  color: black;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chat-wrapper {
+    width: 90%;
+  }
+}

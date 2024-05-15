@@ -1,0 +1,18 @@
+{
+    "nonValidImage": false,
+    "explanation": "",
+    "colorThemes": {
+        "dark": false,
+        "light": false,
+        "colorful": false,
+        "earthy": false,
+        "blackAndWhite": false
+    },
+    "designStyles": {
+        "industrial": false,
+        "scandinavian": false,
+        "minimalist": false,
+        "modern": false,
+        "farmhouse": false
+    }
+}

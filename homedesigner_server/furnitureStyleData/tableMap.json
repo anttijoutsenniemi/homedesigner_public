@@ -1,0 +1,122 @@
+[
+    {
+        "id": 7,
+        "category": "Tables",
+        "imgName": "funkkis_30luku.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": true,
+            "light": false,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": true,
+            "scandinavian": false,
+            "minimalist": false,
+            "modern": true,
+            "farmhouse": false
+        }
+    },
+    {
+        "id": 8,
+        "category": "Tables",
+        "imgName": "jasmin_eimikaluste.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": false,
+            "light": false,
+            "colorful": false,
+            "earthy": true,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": false,
+            "minimalist": false,
+            "modern": true,
+            "farmhouse": false
+        }
+    },
+    {
+        "id": 9,
+        "category": "Tables",
+        "imgName": "kahvipoyta_jmerivaara.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": true,
+            "light": false,
+            "colorful": true,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": true,
+            "scandinavian": false,
+            "minimalist": true,
+            "modern": true,
+            "farmhouse": false
+        }
+    },
+    {
+        "id": 10,
+        "category": "Tables",
+        "imgName": "malli90a_artek.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": false,
+            "light": true,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": false,
+            "minimalist": true,
+            "modern": false,
+            "farmhouse": false
+        }
+    },
+    {
+        "id": 11,
+        "category": "Tables",
+        "imgName": "sohvapoyta_3040luku.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": true,
+            "light": false,
+            "colorful": false,
+            "earthy": true,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": true,
+            "minimalist": false,
+            "modern": false,
+            "farmhouse": true
+        }
+    },
+    {
+        "id": 12,
+        "category": "Tables",
+        "imgName": "sohvapoyta_nordiskakompaniet.webp",
+        "threedModel": "", 
+        "colorThemes": {
+            "dark": false,
+            "light": true,
+            "colorful": false,
+            "earthy": false,
+            "blackAndWhite": false
+        },
+        "designStyles": {
+            "industrial": false,
+            "scandinavian": true,
+            "minimalist": false,
+            "modern": false,
+            "farmhouse": true
+        }
+    }
+]

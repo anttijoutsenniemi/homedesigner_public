@@ -1,0 +1,45 @@
+-sekä React -Aichat, että 3d -sovellus pyörii nyt samalla serverillä
+porteissa
+
+8000/
+
+chat-sovellus
+
+ja
+
+8000/threedroute/?id=huonekalunId
+
+3D-sovellus,
+
+jossa /?id osuus tai query parameter saadaan chat-sovellukselta,
+sen avulla voidaan suoraan näyttää oikean huonekalun id 3D- tai AR-näkymässä
+
+seuraavia mahdollisia steppejä
+
+- Lopullinen chatin ja 3D-softan integraatio ja parametrien lähetys ja vastaanotto
+    -Esim. Wrappaa haluamansa elementin <a> -tägeillä joihin href="/threedroute/?id=huonekalunId"
+
+- Chat sovellukseen kuvia klikkaamalla saman tyyliset popup komponentit kuin React nativen Modal, joissa esim. vaihtoehdot:
+    -kokeilla huonekalua 3D -näkymässä
+    -mennä asiakkaan verkkokauppaan kyseisen huonekalun osoitteeseen 
+    -sulkea valikko
+
+- Apikutsujen siirto serverille ennen Rahtiin viemistä
+
+- jokin numeropohjainen arvostelusysteemi tekoälyprompteihin.
+    tällä hetkellä funktioissa käytetään boolean-pohjaista arvostelua 
+    eri huonekalujen väriteemoista ja tyyliarvoista. Numeropohjaisella järjestelmällä
+    saatettaisiin päästä parempaan tarkkuuteen.
+
+- 3D-sovellukseen mahdollisuus lisätä useampia kalusteita kerralla.
+
+- Chattiin lisävalintoja kuten vuosikaudet
+
+- mathces your needs -> uudelleensanoitus
+
+- tyylikarttoihin kenties materiaaliarvot
+
+- Mahdollisia lisätoiminnallisuuksia esim. useiden tuotteiden malleilu
+
+- chatissa huonekalumatchien etsimisessä olisi hyvä näyttää ekana tuotteet joilla on eniten boolean matcheja
+
