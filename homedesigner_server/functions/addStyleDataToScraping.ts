@@ -36,12 +36,13 @@ export const combineScrapingAndAi =  async (scrapingData : Product[], furnitureC
                     let assignableObject = JSON.parse(processedResult)
                     product['styleJson'] = assignableObject;
                     product['timeStamp'] = createTimestamp();
+                    product['threedModel'] = "";
+
+                    databaseModule?.addData(product); //lastly add product tp db
                 }
                 else{
                     console.log(`An error occured creating product info with title: ${product.title}`);
                 }
-
-                databaseModule?.addData(product); //lastly add product with or without aijson to db
                 
                 console.log(`Completed processing for product title: ${product.title}`);
             }

@@ -3,6 +3,7 @@ import './App.css';
 import ImageCapture from './components/ImageCapture';
 import Modal from './components/Modal';
 import { fetchDesignInterpretation, fetchInterPretationWithReference, fetchInterpretationWithBothImg } from './components/VisionHandler';
+import { fetchSeatingData, fetchTablesData } from './components/ApiFetches';
 import { TailSpin } from 'react-loader-spinner';
 import chairMap from './assets/json/chairMap.json';
 import tableMap from './assets/json/tableMap.json';
@@ -21,36 +22,20 @@ export interface ChatOption {
   label: string;
 }
 
-export interface AiJson {
-  nonValidImage: boolean,
-  explanation: string,
-  colorThemes: {
-      dark: boolean,
-      light: boolean,
-      colorful: boolean,
-      earthy: boolean,
-      blackAndWhite: boolean
-  },
-  designStyles: {
-      industrial: boolean,
-      scandinavian: boolean,
-      minimalist: boolean,
-      modern: boolean,
-      farmhouse: boolean
-  }
-}
-
-export interface FurnitureMap {
-  id: number;
-  category: string;
-  imgName: string;
-  threedModel: string;
+interface AiData {
+  nonValidImage: boolean;
+  explanation: string;
   colorThemes: {
       dark: boolean;
       light: boolean;
       colorful: boolean;
       earthy: boolean;
       blackAndWhite: boolean;
+      pastel: boolean;
+      neutrals: boolean;
+      jewelTones: boolean;
+      metallics: boolean;
+      oceanic: boolean;
   };
   designStyles: {
       industrial: boolean;
@@ -58,6 +43,50 @@ export interface FurnitureMap {
       minimalist: boolean;
       modern: boolean;
       farmhouse: boolean;
+      artDeco: boolean;
+      bohemian: boolean;
+      traditional: boolean;
+      rustic: boolean;
+      glam: boolean;
+      contemporary: boolean;
+      transitional: boolean;
+  };
+}
+
+interface FurnitureData {
+  _id: any;
+  id: number;
+  picUrl: string;
+  title: string;
+  productUrl: string;
+  deleted: boolean;
+  styleJson: {
+      colorThemes: {
+          dark: boolean;
+          light: boolean;
+          colorful: boolean;
+          earthy: boolean;
+          blackAndWhite: boolean;
+          pastel: boolean;
+          neutrals: boolean;
+          jewelTones: boolean;
+          metallics: boolean;
+          oceanic: boolean;
+      };
+      designStyles: {
+          industrial: boolean;
+          scandinavian: boolean;
+          minimalist: boolean;
+          modern: boolean;
+          farmhouse: boolean;
+          artDeco: boolean;
+          bohemian: boolean;
+          traditional: boolean;
+          rustic: boolean;
+          glam: boolean;
+          contemporary: boolean;
+          transitional: boolean;
+      };
   };
 }
 
@@ -70,8 +99,9 @@ const App: React.FC = () => {
   const [roomImage64, setRoomImage64] = useState<string | null>(null);
   const [refImage64, setRefImage64] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [aiJson, setAiJson] = useState<AiJson | boolean>(false);
+  const [aiJson, setAiJson] = useState<any>(false);
   const messageEnd = useRef<HTMLDivElement>(null);
+  const [recommendations, setRecommendations] = useState<FurnitureData[]>(); 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const openModal = () => setModalOpen(true);
@@ -88,7 +118,6 @@ const App: React.FC = () => {
   const updateImage = (img64 : string, roomImage : boolean) => {
     //conditional to see if user sends image of room or reference image
     if(roomImage){
-      console.log(img64);
       setRoomImage64(img64);
       setTimeout(() => { //timeout to let rendering happen first before autoscroll
         scrollToBottom();
@@ -124,19 +153,25 @@ const App: React.FC = () => {
           handleOptionClick('Invalid images');
         }
         else{
-          let jsonMap : FurnitureMap[] = [];
+          let jsonMap : FurnitureData[] = [];
           if(furnitureClass === 'Chairs'){
-            jsonMap = chairMap;
+            jsonMap = await fetchSeatingData();
           }
           else if(furnitureClass === 'Tables'){
-            jsonMap = tableMap;
+            jsonMap = await fetchTablesData();
           }
-          let trueValues : string[] = collectTrueKeys(parsedJson);
-          let imageArray : string[] = filterImagesByTrueValues(jsonMap, trueValues);
-          let botAnswer : string = parsedJson.explanation + 'Here are some recommendations that I think match the style you are looking for, click the images to open more options: ';
+
+          let recommendations = getBestMatches(parsedJson, jsonMap);
+          setRecommendations(recommendations);
+          let imageArray : string[] = [];
+          for(let i = 0; i < recommendations.length; i++){
+            let title : string = recommendations[i].picUrl;
+            imageArray.push(title);
+          }
+          let botAnswer : string = parsedJson.explanation + ' Here are some recommendations that I think match the style you are looking for, click the images to open more options: ';
           //console.log("botanswr: ", botAnswer, "truevlaues: ", trueValues, "images: ", imageArray);
           setLoading(false);
-          handleOptionClick('Paste images', botAnswer, imageArray);
+          handleOptionClick('Show recommendations', botAnswer, imageArray);
         }
       }
       else{
@@ -151,38 +186,51 @@ const App: React.FC = () => {
     
   }
 
-  //this function is for collecting all true values in aiJson
-  const collectTrueKeys = (data : object) : string[] => {
-    let trueKeys : string[] = [];
-    // Function to check each property
-    const checkProperties = (obj : any) => {
-        for (const key in obj) {
-            const value = obj[key];
-            if (typeof value === 'object') {
-                checkProperties(value);  // Recurse if value is an object
-            } else if (value === true) {
-                trueKeys.push(key);  // Add key to array if value is true
-            }
-        }
-    }
-    checkProperties(data); // Start the recursion with the entire JSON object
-    return trueKeys;
-  }
+  //this function is tied to getBestMatches
+  const getMatchScore = (criteria: AiData, item: FurnitureData): number => {
+    let score = 0;
 
-  //these two functions are for cross referencing truevalues to furnitureMap
-  const filterImagesByTrueValues = (items: FurnitureMap[], trueValues: string[]) : string[] => {
-    let matchedImages: string[] = [];
-    items.forEach(item => {
-        if (isMatch(item.colorThemes, trueValues) || isMatch(item.designStyles, trueValues)) {
-            matchedImages.push(item.imgName);
+    const { colorThemes, designStyles } = criteria;
+    const itemColorThemes = item.styleJson.colorThemes;
+    const itemDesignStyles = item.styleJson.designStyles;
+
+    (Object.keys(colorThemes) as (keyof typeof colorThemes)[]).forEach(key => {
+      if (colorThemes[key] && itemColorThemes[key]) {
+          score++;
+      }
+    });
+
+    (Object.keys(designStyles) as (keyof typeof designStyles)[]).forEach(key => {
+        if (designStyles[key] && itemDesignStyles[key]) {
+            score++;
         }
     });
-    return matchedImages;
-  }
 
-  const isMatch = (styles: { [key: string]: boolean }, trueValues: string[]) : boolean => {
-      return trueValues.some(value => styles[value]);
-  }
+    return score;
+}
+
+//this function finds the 10 best matches from db data that have similar style values to what the ai has repsonded with
+const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData[] => {
+    const scoredItems = items.map(item => ({
+        item,
+        score: getMatchScore(criteria, item)
+    }));
+
+    // Sort items by score in descending order
+    scoredItems.sort((a, b) => b.score - a.score);
+
+    // Filter out items with a score of 0
+    const matchedItems = scoredItems.filter(scoredItem => scoredItem.score > 0);
+
+    // If no matches are found, return the first 10 items
+    if (matchedItems.length === 0) {
+        return items.slice(0, 10);
+    }
+
+    // Return top 10 or fewer items
+    return matchedItems.slice(0, 10).map(scoredItem => scoredItem.item);
+}
+
 
   //this function is for redirecting user to threed app
   const redirectToThreedWithParams = (furnitureId : string) => {
@@ -262,8 +310,7 @@ const App: React.FC = () => {
             botResponseText = 'The image/images you posted does not seem to be applicable for interior design. Please provide me with valid images.';
             options = ['Start again'];
             break;
-        case 'Paste images':
-            console.log(botAnswer, images);
+        case 'Show recommendations':
             if(botAnswer && images){
               botResponseText = botAnswer;
               image64 = images
@@ -315,7 +362,7 @@ const App: React.FC = () => {
                     ?
                     <div key={index}>
                       <button onClick={() => openModal()}>
-                        <img src={`/furnitureImages/chairs/${imageUri}`} alt='Furniture recommendation'/>
+                        <img src={`${imageUri}`} alt='Furniture recommendation'/>
                       </button>
                       <Modal title='Select form options below' isOpen={modalOpen} onClose={closeModal}/>
                     </div>
@@ -324,7 +371,7 @@ const App: React.FC = () => {
                     // </a>
                     :
                     <a key={index} href={`/threedroute/?id=table`}>
-                    <img src={`/furnitureImages/tables/${imageUri}`} alt='Furniture recommendation'/>
+                    <img src={`${imageUri}`} alt='Furniture recommendation'/>
                     </a>
                   ))
                 }

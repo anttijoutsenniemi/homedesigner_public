@@ -7,6 +7,7 @@ export interface Product {
     title: string;
     productUrl: string;
     styleJson?: any,
+    threedModel?: string,
     deleted?: boolean,
     timeStamp?: string
 }

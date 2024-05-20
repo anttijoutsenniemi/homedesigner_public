@@ -50,7 +50,10 @@ const chairModel = () => {
     //find all data and return an array
     const fetchData = async () => {
         try {
-            const result = await chairCollection.find().toArray();
+            const result = await chairCollection.find({
+                styleJson: { $exists: true },
+                deleted: false
+            }).toArray();
             return result;
         } catch (error) {
             console.error('Connection to test db failed with status code 101');

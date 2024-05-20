@@ -6,6 +6,7 @@ import helmet from "helmet";
 import expressBasicAuth from "express-basic-auth";
 import threedroute from "./routes/threedroute";
 import aiRoute from "./routes/aiRoute";
+import apiRoute from "./routes/apiRoute";
 import scrapingRoute from "./routes/scrapingRoute";
 import { setupCronJobs } from "./functions/scheduledFunctions";
 import path from 'path';
@@ -39,6 +40,7 @@ const cspConfig = {
       "'sha256-zUmoJ0KpX3OdX9NzxeqDMx8bMlJ20C+luSCKq8owGgs='" //hash for importmap in index.html
     ],
     connectSrc: ["'self'", "blob:"],
+    imgSrc: ["'self'", "https://fargovintage.fi", "data:"]
   },
 };
 
@@ -66,6 +68,7 @@ app.use(express.static('public_chat'));
 
 app.use("/threedroute/", threedroute);
 app.use("/airoute/", aiRoute);
+app.use("/apiroute", apiRoute);
 //app.use("/scrapingroute/", scrapingRoute);
 
 app.get("/", (req: Request, res: Response) => {
