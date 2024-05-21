@@ -33,7 +33,6 @@ seuraavia mahdollisia steppejä
 
 - 3D-sovellukseen mahdollisuus lisätä useampia kalusteita kerralla.
 
-- Chattiin lisävalintoja kuten vuosikaudet
 
 - mathces your needs -> uudelleensanoitus
 
@@ -41,5 +40,10 @@ seuraavia mahdollisia steppejä
 
 - Mahdollisia lisätoiminnallisuuksia esim. useiden tuotteiden malleilu
 
-- chatissa huonekalumatchien etsimisessä olisi hyvä näyttää ekana tuotteet joilla on eniten boolean matcheja
+- Lisästeppi kohtaan -> not this time thank you uudelleensanoitus kaksi vaihtoehtoa
+
+- 3d sovellukseen huomioteksti esim. huom mallien koot obvat suuntaa-antavia
+
+- Open in online store ekaksi vaihtoehdoksi
+
 
