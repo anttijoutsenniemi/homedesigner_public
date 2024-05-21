@@ -259,40 +259,27 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
             break;
         case 'Chairs':
             setFurnitureClass('Chairs');
-            botResponseText = 'Sure, lets find a chair to your liking. Do you want to take a picture of the room so I can suggest chairs that I think fit the space?';
-            options = ['Yes I can take a picture of the room', 'Not this time thank you', 'Give me chair suggestions that I can browse'];
+            botResponseText = 'Sure, lets find a chair to your liking. Would you like to provide me with image/images so I can better understand your style or get random table suggestions straight away?';
+            options = ['Yes I would like to provide images', 'Give me chair suggestions that I can browse'];
             break;
         case 'Tables':
             setFurnitureClass('Tables');
-            botResponseText = 'Sure, lets find a table to your liking. Do you want to take a picture of the room so I can suggest chairs that I think fit the space?';
-            options = ['Yes I can take a picture of the room', 'Not this time thank you', 'Give me table suggestions that I can browse'];
+            botResponseText = 'Sure, lets find a table to your liking. Would you like to provide me with image/images so I can better understand your style or get random table suggestions straight away?';
+            options = ['Yes I would like to provide images', 'Give me table suggestions that I can browse'];
             break;
-        case 'Yes I can take a picture of the room':
-            botResponseText = 'Do you also want to add a reference picture that I can look at for inspiration?';
-            options = ['Yes I can also add a reference picture', 'No I dont want to also add a reference picture'];
+        case 'Yes I would like to provide images':
+            botResponseText = 'Would you like to provide me with an image of the room you are designing, a reference image that can be anything I can take style inspiration from or both?';
+            options = ['Add only image of the room', 'Add only reference image', 'Add both images'];
             break;
-        case 'Not this time thank you':
-            botResponseText = 'Do you want to add a reference picture that I can look at for inspiration?';
-            options = ['Yes I can add a reference picture', 'No I dont want to add a reference picture'];
-            break;
-        case 'Yes I can also add a reference picture':
+        case 'Add both images':
             imageModeRoom = true;
             imageModeRef = true;
             break;
-        case 'No I dont want to also add a reference picture':
+        case 'Add only image of the room':
             imageModeRoom = true;
             break;
-        case 'Yes I can add a reference picture':
+        case 'Add only reference image':
             imageModeRef = true;
-            break;
-        case 'No I dont want to add a reference picture':
-            if(furnitureClass === 'Tables'){
-              //here recommend tables
-            }
-            else if(furnitureClass === 'Chairs'){
-              //here recommend chairs
-            }
-            options = ['Start again'];
             break;
         case 'Give me chair suggestions that I can browse':
             //code for giving chair suggestions
@@ -345,6 +332,8 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
 
   return (
     <div className="chat-app-background">
+      <div className='screen-wrapper'>
+        <div className='app-header'><h1 className='header-title'>Homedesigner Assistant</h1></div>
       <div className="chat-wrapper">
       {messages.map((message) => (
       <div key={message.id} className={`chat-message ${message.type}`}>
@@ -364,7 +353,7 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
                       <button onClick={() => openModal()}>
                         <img src={`${imageUri}`} alt='Furniture recommendation'/>
                       </button>
-                      <Modal title='Select form options below' isOpen={modalOpen} onClose={closeModal}/>
+                      <Modal title='Select from options below' isOpen={modalOpen} onClose={closeModal}/>
                     </div>
                     // <a key={index} href={`/threedroute/?id=chair`}>
                     //   <img src={`/furnitureImages/chairs/${imageUri}`} alt='Furniture recommendation'/>
@@ -482,6 +471,7 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
       </div>
     ))}
       
+      </div>
       </div>
     </div>
   );

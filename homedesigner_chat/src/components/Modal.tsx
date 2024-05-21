@@ -38,10 +38,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         }
         <footer className="modal-footer">
           {/* <button className='modal-option-button' onClick={() => openInOnlineMarketplace()}>Open in 3D-view at home</button> */}
+          <button className='modal-option-button' onClick={() => openInOnlineMarketplace()}>Open in online store</button>
           <a href={`/threedroute/?id=table`}>
             <div className='modal-option-button'>Open in 3D-view at home</div>
           </a>
-          <button className='modal-option-button' onClick={() => openInOnlineMarketplace()}>Open in online marketplace</button>
         </footer>
       </div>
     </div>

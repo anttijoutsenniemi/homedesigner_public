@@ -4,9 +4,23 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('./assets/waves2.svg'); /* Replace with your image path */
+  background-image: url('./assets/waves2.svg');
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.screen-wrapper {
+  flex-direction: column;
+}
+
+.app-header {
+  height: 40px;
+}
+
+.header-title {
+  color: white;
+  font-size: large;
+  font-family: 'Courier New', monospace;
 }
 
 .chat-wrapper {
