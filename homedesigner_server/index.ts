@@ -14,19 +14,18 @@ import path from 'path';
 const app : Application = express();
 
 //http basic auth
-app.use(
+const authenticate =
   expressBasicAuth({
     users: {
       [process.env.HTTP_BASIC_AUTH_USERNAME!]: process.env.HTTP_BASIC_AUTH_PASSWORD!
     },
     unauthorizedResponse: getUnauthorizedResponse,
     challenge: true
-  })
-);
+});
 
 function getUnauthorizedResponse(req:any) {
     return req.auth
-        ? 'Credentials ' + req.auth.user + ':' + req.auth.password + ' rejected'
+        ? 'Credentials rejected'
         : 'No credentials provided';
 }
 
@@ -51,13 +50,7 @@ app.use(helmet({
 
 const port = process.env.PORT || 8000;
 
-/* Cors setup
-
-app.use(cors({
-  "origin" : "*",
-  "optionsSuccessStatus" : 204 
-})); */
-
+/* Cors setup */
 app.use(cors());
 
 setupCronJobs(); //start scheduled functions
@@ -67,8 +60,8 @@ app.use(express.json({limit: '50mb'})); //receive req.body
 app.use(express.static('public_chat'));
 
 app.use("/threedroute/", threedroute);
-app.use("/airoute/", aiRoute);
-app.use("/apiroute", apiRoute);
+app.use("/airoute/", authenticate, aiRoute);
+app.use("/apiroute", authenticate, apiRoute);
 //app.use("/scrapingroute/", scrapingRoute);
 
 app.get("/", (req: Request, res: Response) => {
