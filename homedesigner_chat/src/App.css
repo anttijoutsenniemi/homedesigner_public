@@ -11,6 +11,8 @@
 
 .screen-wrapper {
   flex-direction: column;
+  max-height: 90%;
+  overflow-y: scroll;
 }
 
 .app-header {
@@ -26,10 +28,10 @@
 .chat-wrapper {
   width: 100%;
   max-width: 600px; /* Narrow down on desktop */
-  max-height: 90%;
+  /* max-height: 90%; */
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  overflow-y: scroll; /* Enable scroll if content overflows */
+  /* overflow-y: scroll;  */
 }
 
 .chat-message {

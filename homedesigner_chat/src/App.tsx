@@ -53,7 +53,7 @@ interface AiData {
   };
 }
 
-interface FurnitureData {
+export interface FurnitureData {
   _id: any;
   id: number;
   picUrl: string;
@@ -101,7 +101,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [aiJson, setAiJson] = useState<any>(false);
   const messageEnd = useRef<HTMLDivElement>(null);
-  const [recommendations, setRecommendations] = useState<FurnitureData[]>(); 
+  const [recommendations, setRecommendations] = useState<FurnitureData[]>([]); 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const openModal = () => setModalOpen(true);
@@ -161,13 +161,14 @@ const App: React.FC = () => {
             jsonMap = await fetchTablesData();
           }
 
-          let recommendations = getBestMatches(parsedJson, jsonMap);
-          setRecommendations(recommendations);
+          let newRecommendations = getBestMatches(parsedJson, jsonMap);
+          setRecommendations(newRecommendations);
           let imageArray : string[] = [];
-          for(let i = 0; i < recommendations.length; i++){
-            let title : string = recommendations[i].picUrl;
+          for(let i = 0; i < newRecommendations.length; i++){
+            let title : string = newRecommendations[i].picUrl;
             imageArray.push(title);
           }
+          imageArray.reverse();
           let botAnswer : string = parsedJson.explanation + ' Here are some recommendations that I think match the style you are looking for, click the images to open more options: ';
           //console.log("botanswr: ", botAnswer, "truevlaues: ", trueValues, "images: ", imageArray);
           setLoading(false);
@@ -347,21 +348,12 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
                 <div className="chat-bubble" style={{marginBottom:'10px'}}>{message.text}</div>
                 {
                   message.image64.map((imageUri, index) => (
-                    (furnitureClass === 'Chairs')
-                    ?
                     <div key={index}>
                       <button onClick={() => openModal()}>
                         <img src={`${imageUri}`} alt='Furniture recommendation'/>
                       </button>
-                      <Modal title='Select from options below' isOpen={modalOpen} onClose={closeModal}/>
+                      <Modal title='Select from options below' singleProduct={recommendations[index]} isOpen={modalOpen} onClose={closeModal}/>
                     </div>
-                    // <a key={index} href={`/threedroute/?id=chair`}>
-                    //   <img src={`/furnitureImages/chairs/${imageUri}`} alt='Furniture recommendation'/>
-                    // </a>
-                    :
-                    <a key={index} href={`/threedroute/?id=table`}>
-                    <img src={`${imageUri}`} alt='Furniture recommendation'/>
-                    </a>
                   ))
                 }
                 {

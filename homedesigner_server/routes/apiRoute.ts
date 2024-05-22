@@ -10,6 +10,7 @@ const apiRoute : express.Router = express.Router();
 apiRoute.get("/tables", async (req : express.Request, res : express.Response) : Promise<void> => { 
     try {
         let data = await tableModule.fetchData();
+        console.log(data[0], data[1]);
         res.status(200).json(data);
     } catch (e : any) {
         res.status(404).json({ "error" : `error fetching: ${e}` });
