@@ -7,7 +7,7 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children?: string
-  singleProduct: FurnitureData
+  singleProduct: any
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, singleProduct }) => {

@@ -13,13 +13,19 @@ export interface ChatMessage {
   type: 'user' | 'chatbot';
   text: string;
   options?: string[]; // Only present if type is 'chatbot'
-  image64?: string[] | boolean;
+  image64?: Recommendation[] | boolean;
   imageModeRoom?: boolean; //when user is taking pic of room
   imageModeRef?: boolean; //when user is choosing reference pic for style
 }
 
 export interface ChatOption {
   label: string;
+}
+
+interface Recommendation {
+  picUrl: string,
+  productUrl: string,
+  title: string,
 }
 
 interface AiData {
@@ -163,12 +169,16 @@ const App: React.FC = () => {
 
           let newRecommendations = getBestMatches(parsedJson, jsonMap);
           setRecommendations(newRecommendations);
-          let imageArray : string[] = [];
+          let imageArray : Recommendation[] = [];
           for(let i = 0; i < newRecommendations.length; i++){
-            let title : string = newRecommendations[i].picUrl;
-            imageArray.push(title);
+            let newObject = {
+              picUrl: newRecommendations[i].picUrl,
+              productUrl: newRecommendations[i].productUrl,
+              title: newRecommendations[i].title
+            }
+            imageArray.push(newObject);
           }
-          imageArray.reverse();
+
           let botAnswer : string = parsedJson.explanation + ' Here are some recommendations that I think match the style you are looking for, click the images to open more options: ';
           //console.log("botanswr: ", botAnswer, "truevlaues: ", trueValues, "images: ", imageArray);
           setLoading(false);
@@ -245,14 +255,14 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
   }
 
   // Function to handle option click, send next options and paste next user and bot message
-  const handleOptionClick = (option : string, botAnswer? : string, images? : string[]) => {
+  const handleOptionClick = (option : string, botAnswer? : string, images? : Recommendation[]) => {
     const newUserMessage: ChatMessage = { id: messages.length + 1, type: 'user', text: option };
 
     let botResponseText : string = 'I am not coded that far yet';  // Default response text
     let options : string[] = [];
     let imageModeRoom : boolean = false;
     let imageModeRef : boolean = false;
-    let image64 : string[] | boolean = false; 
+    let image64 : Recommendation[] | boolean = false; 
     switch (option) {
         case 'Help me find suitable furniture for my home.':
             botResponseText = 'Great! What type of furniture are you looking for? Here are some categories to choose from:';
@@ -347,12 +357,12 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
               <div>
                 <div className="chat-bubble" style={{marginBottom:'10px'}}>{message.text}</div>
                 {
-                  message.image64.map((imageUri, index) => (
+                  message.image64.map((product, index) => (
                     <div key={index}>
                       <button onClick={() => openModal()}>
-                        <img src={`${imageUri}`} alt='Furniture recommendation'/>
+                        <img src={`${product.picUrl}`} alt='Furniture recommendation'/>
                       </button>
-                      <Modal title='Select from options below' singleProduct={recommendations[index]} isOpen={modalOpen} onClose={closeModal}/>
+                      <Modal title='Select from options below' singleProduct={product} isOpen={modalOpen} onClose={closeModal}/>
                     </div>
                   ))
                 }
