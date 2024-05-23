@@ -1,5 +1,9 @@
 /* src/App.css */
 
+*{
+  font-family: sans-serif;
+}
+
 .chat-app-background {
   display: flex;
   justify-content: center;
