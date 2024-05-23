@@ -21,6 +21,7 @@ $(".ar-object").click(function(){
     if(current_object != null){
         scene.remove(current_object);
     }
+    document.getElementById("mySidenav").style.width = "0";
 
     loadModel($(this).attr("id"));
 });

@@ -16,10 +16,10 @@
 
 .screen-wrapper {
   flex-direction: column;
-  max-height: 90%;
+  max-height: 100%;
   max-width: 700px;
   overflow-y: scroll;
-  width: 95%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   /* Firefox scrollbar styles */
@@ -131,7 +131,7 @@
 }
 
 .chat-message.user .chat-bubble {
-  background-color: #4caf50; /* Different color for user */
+  background-color: #007778; /* Different color for user */
   color: white;
 }
 
@@ -148,7 +148,7 @@
   border: none;
   border-radius: 15px;
   cursor: pointer;
-  background-color: #2196f3;
+  background-color: #0B1215;
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -165,7 +165,7 @@
 }
 
 .camera-button:hover, .gallery-button:hover {
-  background-color: #2196f3;
+  background-color: #0B1215;
 }
 
 .upload-button {
@@ -181,8 +181,12 @@
 }
 
 /* Responsive adjustments */
-/* @media (max-width: 768px) {
-  .chat-wrapper {
-    width: 90%
+@media (max-width: 768px) {
+  .app-header{
+    top: 0;
+    position: fixed;
   }
-} */
+  .chat-wrapper{
+    margin-top: 50px;
+  }
+}

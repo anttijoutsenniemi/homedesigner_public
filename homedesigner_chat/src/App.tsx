@@ -3,7 +3,7 @@ import './App.css';
 import ImageCapture from './components/ImageCapture';
 import Modal from './components/Modal';
 import { fetchDesignInterpretation, fetchInterPretationWithReference, fetchInterpretationWithBothImg } from './components/VisionHandler';
-import { fetchSeatingData, fetchTablesData } from './components/ApiFetches';
+import { checkUrl, fetchSeatingData, fetchTablesData } from './components/ApiFetches';
 import { TailSpin } from 'react-loader-spinner';
 import chairMap from './assets/json/chairMap.json';
 import tableMap from './assets/json/tableMap.json';
@@ -125,7 +125,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, loading]);
 
   const updateImage = (img64 : string, roomImage : boolean) => {
     //conditional to see if user sends image of room or reference image
@@ -144,20 +144,13 @@ const App: React.FC = () => {
     }
   }
 
-  async function checkUrlExists(url : string) {
-    try {
-      const response = await fetch(url, { method: 'HEAD' });
-      return response.ok; // returns true if the status code is in the range 200-299
-    } catch (error) {
-      return false; // returns false if the fetch request fails
-    }
-  }
 
   //function for uploading image/images to correct aiprompt in VisionHandler.tsx
   const uploadImage = async (img64 : string, roomMode : boolean, refMode? : boolean, refImage? : string) => {
     try {
       let aiJson : any = false;
       setLoading(true);
+      scrollToBottom();
       if(roomMode && refMode && refImage){
         aiJson = await fetchInterpretationWithBothImg(img64, refImage);
       }
@@ -192,7 +185,7 @@ const App: React.FC = () => {
               title: newRecommendations[i].title,
               threedModel: newRecommendations[i].threedModel || ""
             };
-            let urlExists = await checkUrlExists(newObject.productUrl); //check if the product page url exists so we can block out just bought products
+            let urlExists = await checkUrl(newObject.productUrl); //check if the product page url exists so we can block out just bought products
             if (urlExists) {
               imageArray.push(newObject);
             }
@@ -261,6 +254,43 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
     return matchedItems.slice(0, 10).map(scoredItem => scoredItem.item);
 }
 
+function getRandomElements(arr : any, count : number) {
+  const shuffled = arr.sort(() => 0.5 - Math.random()); // Shuffle the array
+  return shuffled.slice(0, count); // Get the first `count` elements
+}
+
+const getRandomRecommendations = async () => {
+  let jsonMap;
+  if(furnitureClass === 'Chairs'){
+    jsonMap = await fetchSeatingData();
+  }
+  else if(furnitureClass === 'Tables'){
+    jsonMap = await fetchTablesData();
+  }
+  if (jsonMap.length <= 10) {
+    return jsonMap; // If there are 10 or fewer items, return them all
+  }
+  let newRecommendations = getRandomElements(jsonMap, 10)
+  let imageArray : Recommendation[] = [];
+  for(let i = 0; i < newRecommendations.length; i++){
+    let newObject = {
+      picUrl: newRecommendations[i].picUrl,
+      productUrl: newRecommendations[i].productUrl,
+      title: newRecommendations[i].title,
+      threedModel: newRecommendations[i].threedModel || ""
+    };
+    let urlExists = await checkUrl(newObject.productUrl); //check if the product page url exists so we can block out just bought products
+    if (urlExists) {
+      imageArray.push(newObject);
+    }
+  }
+
+  let botAnswer : string = 'Here are some random furniture recommendations as requested!';
+  //console.log("botanswr: ", botAnswer, "truevlaues: ", trueValues, "images: ", imageArray);
+  setLoading(false);
+  handleOptionClick('Show recommendations', botAnswer, imageArray);
+}
+
 
   //this function is for redirecting user to threed app
   const redirectToThreedWithParams = (furnitureId : string) => {
@@ -289,7 +319,7 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
             break;
         case 'Chairs':
             setFurnitureClass('Chairs');
-            botResponseText = 'Sure, lets find a chair to your liking. Would you like to provide me with image/images so I can better understand your style or get random table suggestions straight away?';
+            botResponseText = 'Sure, lets find a chair to your liking. Would you like to provide me with image/images so I can better understand your style or get random chair suggestions straight away?';
             options = ['Yes I would like to provide images', 'Give me chair suggestions that I can browse'];
             break;
         case 'Tables':
@@ -312,12 +342,14 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
             imageModeRef = true;
             break;
         case 'Give me chair suggestions that I can browse':
-            //code for giving chair suggestions
-            options = ['Start again'];
+            botResponseText = 'Alright, picking 10 chair suggestions for you at random...';
+            getRandomRecommendations();
+            options = ['Start again', 'Give me chair suggestions that I can browse'];
             break;
         case 'Give me table suggestions that I can browse':
-            //code for giving table suggestions
-            options = ['Start again'];
+            botResponseText = 'Alright, picking 10 table suggestions for you at random...';
+            getRandomRecommendations();
+            options = ['Start again', 'Give me table suggestions that I can browse'];
             break;
         case 'Error occured':
             botResponseText = 'Error occured fetching AI response';
@@ -375,7 +407,12 @@ function toggleDrawer() {
         </div>
         <div className='drawer' id='drawer'>
         <button className='close-button' onClick={()=>toggleDrawer()}>Close &times;</button>
-          <p>Juu</p>
+          <a href={`/threedroute`}>
+            <div className='modal-option-button' style={{color: 'white', marginTop: 10}}>Open 3D/AR -app</div>
+          </a>
+          <a href={`https://fargovintage.fi/en`}>
+            <div className='modal-option-button' style={{color: 'white', marginTop: 10}}>Open Fargo Vintage & Design store</div>
+          </a>
         </div>
       <div className="chat-wrapper">
       {messages.map((message) => (
@@ -429,7 +466,6 @@ function toggleDrawer() {
                   }
                   <p style={{marginBottom: '5px'}}>Add reference picture</p>
                   <ImageCapture room={false} reference={true} updateImage={updateImage}/>
-                  <div ref={messageEnd}></div>
                   {refImage64 && roomImage64 &&
                   <>
                     <img src={refImage64} alt="Captured" style={{marginTop: 10, marginBottom: 10}}/>
@@ -438,8 +474,15 @@ function toggleDrawer() {
                     </div>
                   </>
                   }
-                  {loading && <TailSpin color="#00BFFF" height={80} width={80} />}
+                  {loading && 
+                  <div style={{marginTop: 10}}>
+                    <TailSpin color="#007778" height={80} width={80}/>
+                    <p style={{margin: 10}}>Finding furniture that fit your style...</p>
+                    <div ref={messageEnd}></div>
+                  </div>}
+                  <div ref={messageEnd}></div>
                 </div>
+                
               :
                 //paste chatbot image message
                 (message.imageModeRoom)
@@ -455,7 +498,12 @@ function toggleDrawer() {
                       </div>
                     </>
                   }
-                  {loading && <TailSpin color="#00BFFF" height={80} width={80} />}
+                  {loading && 
+                  <div style={{marginTop: 10}}>
+                    <TailSpin color="#007778" height={80} width={80} />
+                    <p style={{margin: 10}}>Finding furniture that fit your style...</p>
+                    <div ref={messageEnd}></div>
+                  </div>}
                   <div ref={messageEnd}></div>
                 </div>
 
@@ -470,7 +518,12 @@ function toggleDrawer() {
                     </div>
                   </>
                   }
-                  {loading && <TailSpin color="#00BFFF" height={80} width={80} />}
+                  {loading && 
+                  <div style={{marginTop: 10}}>
+                    <TailSpin color="#007778" height={80} width={80} />
+                    <p style={{margin: 10}}>Finding furniture that fit your style...</p>
+                    <div ref={messageEnd}></div>
+                  </div>}
                   <div ref={messageEnd}></div>
                 </div>
 

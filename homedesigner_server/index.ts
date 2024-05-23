@@ -38,7 +38,7 @@ const cspConfig = {
       "https://ajax.googleapis.com",
       "'sha256-zUmoJ0KpX3OdX9NzxeqDMx8bMlJ20C+luSCKq8owGgs='" //hash for importmap in index.html
     ],
-    connectSrc: ["'self'", "blob:"],
+    connectSrc: ["'self'", "blob:", "https://fargovintage.fi"],
     imgSrc: ["'self'", "https://fargovintage.fi", "data:"]
   },
 };

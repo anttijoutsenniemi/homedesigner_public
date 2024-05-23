@@ -37,12 +37,12 @@ const ImageCapture : React.FC<ImageCaptureProps> = (props) => {
             />
             <div>
                 <button
-                    style={(useCamera) ? { backgroundColor: '#2196f3'} : { backgroundColor: 'grey' }}  
+                    style={(useCamera) ? { backgroundColor: '#0B1215'} : { backgroundColor: 'grey' }}  
                     onClick={() => setUseCamera(true)} 
                     className="camera-button">Use Camera
                 </button>
                 <button 
-                    style={(useCamera) ? { backgroundColor: 'grey' } : { backgroundColor: '#2196f3'}}
+                    style={(useCamera) ? { backgroundColor: 'grey' } : { backgroundColor: '#0B1215'}}
                     onClick={() => setUseCamera(false)} 
                     className="gallery-button">Use Gallery
                 </button>
