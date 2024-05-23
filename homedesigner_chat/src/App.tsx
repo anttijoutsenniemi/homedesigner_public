@@ -26,6 +26,7 @@ export interface Recommendation {
   picUrl: string,
   productUrl: string,
   title: string,
+  threedModel?: string
 }
 
 interface AiData {
@@ -66,6 +67,7 @@ export interface FurnitureData {
   title: string;
   productUrl: string;
   deleted: boolean;
+  threedModel?: string,
   styleJson: {
       colorThemes: {
           dark: boolean;
@@ -142,6 +144,15 @@ const App: React.FC = () => {
     }
   }
 
+  async function checkUrlExists(url : string) {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok; // returns true if the status code is in the range 200-299
+    } catch (error) {
+      return false; // returns false if the fetch request fails
+    }
+  }
+
   //function for uploading image/images to correct aiprompt in VisionHandler.tsx
   const uploadImage = async (img64 : string, roomMode : boolean, refMode? : boolean, refImage? : string) => {
     try {
@@ -178,9 +189,13 @@ const App: React.FC = () => {
             let newObject = {
               picUrl: newRecommendations[i].picUrl,
               productUrl: newRecommendations[i].productUrl,
-              title: newRecommendations[i].title
+              title: newRecommendations[i].title,
+              threedModel: newRecommendations[i].threedModel || ""
+            };
+            let urlExists = await checkUrlExists(newObject.productUrl); //check if the product page url exists so we can block out just bought products
+            if (urlExists) {
+              imageArray.push(newObject);
             }
-            imageArray.push(newObject);
           }
 
           let botAnswer : string = parsedJson.explanation + ' Here are some recommendations that I think match the style you are looking for, click the images to open more options: ';
@@ -345,10 +360,22 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
     setMessages([...messages, newUserMessage, newBotMessage]);
 };
 
+function toggleDrawer() {
+  const drawer : any = document.getElementById('drawer');
+  drawer.classList.toggle('open');
+}
+
   return (
     <div className="chat-app-background">
       <div className='screen-wrapper'>
-        <div className='app-header'><h1 className='header-title'>Homedesigner Assistant</h1></div>
+        <div className='app-header'><h1 className='header-title'>Homedesigner Assistant</h1>
+        <div className='hamburger-menu' onClick={()=>toggleDrawer()}>
+          &#9776;
+        </div>
+        </div>
+        <div className='drawer' id='drawer'>
+          <p>Juu</p>
+        </div>
       <div className="chat-wrapper">
       {messages.map((message) => (
       <div key={message.id} className={`chat-message ${message.type}`}>
