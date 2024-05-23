@@ -374,6 +374,7 @@ function toggleDrawer() {
         </div>
         </div>
         <div className='drawer' id='drawer'>
+        <button className='close-button' onClick={()=>toggleDrawer()}>Close &times;</button>
           <p>Juu</p>
         </div>
       <div className="chat-wrapper">
