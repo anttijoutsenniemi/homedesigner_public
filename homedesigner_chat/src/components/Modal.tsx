@@ -1,16 +1,17 @@
-import React from 'react';
+import { useEffect } from 'react';
 import './../css/Modal.css';
-import { FurnitureData } from '../App';
+import { FurnitureData, Recommendation } from '../App';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children?: string
-  singleProduct: any
+  products: any,
+  product: Recommendation | any
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, singleProduct }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, products, product }) => {
   if (!isOpen) return null;
 
   const closeModal = () => {
@@ -41,10 +42,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, singleP
         <footer className="modal-footer">
           {/* <button className='modal-option-button' onClick={() => openInOnlineMarketplace()}>Open in 3D-view at home</button> */}
           {/* <button className='modal-option-button' onClick={() => openInOnlineMarketplace()}>Open in online store</button> */}
-          <a href={`${singleProduct.productUrl}`}>
+          <a href={`${product.productUrl}`}>
             <div className='modal-option-button'>Open in online store</div>
           </a>
-          <a href={`/threedroute/?id=${singleProduct.title}`}>
+          <a href={`/threedroute/?id=${product.title}`}>
             <div className='modal-option-button'>Open in 3D-view at home</div>
           </a>
         </footer>

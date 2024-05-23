@@ -22,7 +22,7 @@ export interface ChatOption {
   label: string;
 }
 
-interface Recommendation {
+export interface Recommendation {
   picUrl: string,
   productUrl: string,
   title: string,
@@ -109,8 +109,12 @@ const App: React.FC = () => {
   const messageEnd = useRef<HTMLDivElement>(null);
   const [recommendations, setRecommendations] = useState<FurnitureData[]>([]); 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<null | Recommendation>(null);
 
-  const openModal = () => setModalOpen(true);
+  const openModal = (product : Recommendation) => {
+    setModalOpen(true);
+    setSelectedProduct(product);
+  }
   const closeModal = () => setModalOpen(false);
 
   const scrollToBottom = () => {
@@ -359,10 +363,10 @@ const getBestMatches = (criteria: AiData, items: FurnitureData[]): FurnitureData
                 {
                   message.image64.map((product, index) => (
                     <div key={index}>
-                      <button onClick={() => openModal()}>
+                      <button onClick={() => openModal(product)}>
                         <img src={`${product.picUrl}`} alt='Furniture recommendation'/>
                       </button>
-                      <Modal title='Select from options below' singleProduct={product} isOpen={modalOpen} onClose={closeModal}/>
+                      <Modal title='Select from options below' products={message.image64} product={selectedProduct} isOpen={modalOpen} onClose={closeModal}/>
                     </div>
                   ))
                 }

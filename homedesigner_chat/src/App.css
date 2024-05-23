@@ -12,11 +12,16 @@
 .screen-wrapper {
   flex-direction: column;
   max-height: 90%;
+  max-width: 700px;
   overflow-y: scroll;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .app-header {
   height: 40px;
+  width: 100%;
 }
 
 .header-title {
@@ -27,9 +32,9 @@
 
 .chat-wrapper {
   width: 100%;
-  max-width: 600px; /* Narrow down on desktop */
+  /* max-width: 600px; */
   /* max-height: 90%; */
-  padding: 20px;
+  padding: 10px;
   background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
   /* overflow-y: scroll;  */
 }
@@ -120,8 +125,8 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .chat-wrapper {
-    width: 90%;
+    width: 90%
   }
-}
+} */
