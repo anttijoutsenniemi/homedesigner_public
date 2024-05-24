@@ -16,15 +16,6 @@ sen avulla voidaan suoraan näyttää oikean huonekalun id 3D- tai AR-näkymäss
 
 seuraavia mahdollisia steppejä
 
-- Lopullinen chatin ja 3D-softan integraatio ja parametrien lähetys ja vastaanotto
-    -Esim. Wrappaa haluamansa elementin <a> -tägeillä joihin href="/threedroute/?id=huonekalunId"
-
-- Chat sovellukseen kuvia klikkaamalla saman tyyliset popup komponentit kuin React nativen Modal, joissa esim. vaihtoehdot:
-    -kokeilla huonekalua 3D -näkymässä
-    -mennä asiakkaan verkkokauppaan kyseisen huonekalun osoitteeseen 
-    -sulkea valikko
-
-- Apikutsujen siirto serverille ennen Rahtiin viemistä
 
 - jokin numeropohjainen arvostelusysteemi tekoälyprompteihin.
     tällä hetkellä funktioissa käytetään boolean-pohjaista arvostelua 
@@ -33,17 +24,9 @@ seuraavia mahdollisia steppejä
 
 - 3D-sovellukseen mahdollisuus lisätä useampia kalusteita kerralla.
 
-
-- mathces your needs -> uudelleensanoitus
-
 - tyylikarttoihin kenties materiaaliarvot
-
-- Mahdollisia lisätoiminnallisuuksia esim. useiden tuotteiden malleilu
-
-- Lisästeppi kohtaan -> not this time thank you uudelleensanoitus kaksi vaihtoehtoa
 
 - 3d sovellukseen huomioteksti esim. huom mallien koot obvat suuntaa-antavia
 
-- Open in online store ekaksi vaihtoehdoksi
 
 
