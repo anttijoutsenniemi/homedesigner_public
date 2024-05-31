@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLB File Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .drop-zone {
+      max-width: 300px;
+      height: 200px;
+      padding: 10px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ccc;
+      margin: 50px auto;
+    }
+    .drop-zone.dragover {
+      border-color: #000;
+      color: #000;
+    }
+    #file-input {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="drop-zone" id="drop-zone">Drag & Drop your .glb file here or click to upload</div>
+  <input type="file" id="file-input" accept=".glb">
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        uploadFile(files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        uploadFile(fileInput.files[0]);
+      }
+    });
+
+    function uploadFile(file) {
+      if (file.type !== 'model/gltf-binary') {
+        alert('Only .glb files are allowed');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('model', file);
+
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert(`Error: ${data.error}`);
+        } else {
+          alert('File uploaded successfully');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while uploading the file');
+      });
+    }
+  </script>
+</body>
+</html>

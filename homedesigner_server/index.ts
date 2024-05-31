@@ -7,6 +7,7 @@ import expressBasicAuth from "express-basic-auth";
 import threedroute from "./routes/threedroute";
 import aiRoute from "./routes/aiRoute";
 import apiRoute from "./routes/apiRoute";
+import threedUploadRoute from "./routes/threedUploadRoute";
 import scrapingRoute from "./routes/scrapingRoute";
 import { setupCronJobs } from "./functions/scheduledFunctions";
 import path from 'path';
@@ -18,6 +19,16 @@ const authenticate =
   expressBasicAuth({
     users: {
       [process.env.HTTP_BASIC_AUTH_USERNAME!]: process.env.HTTP_BASIC_AUTH_PASSWORD!
+    },
+    unauthorizedResponse: getUnauthorizedResponse,
+    challenge: true
+});
+
+//http basic auth
+const authenticateAdmin =
+  expressBasicAuth({
+    users: {
+      [process.env.HTTP_BASIC_AUTH_USERNAME2!]: process.env.HTTP_BASIC_AUTH_PASSWORD2!
     },
     unauthorizedResponse: getUnauthorizedResponse,
     challenge: true
@@ -62,6 +73,7 @@ app.use(express.static('public_chat'));
 app.use("/threedroute/", threedroute);
 app.use("/airoute/", authenticate, aiRoute);
 app.use("/apiroute", authenticate, apiRoute);
+//app.use("/threeduploadroute", authenticateAdmin, threedUploadRoute);
 //app.use("/scrapingroute/", scrapingRoute);
 
 app.get("/", (req: Request, res: Response) => {

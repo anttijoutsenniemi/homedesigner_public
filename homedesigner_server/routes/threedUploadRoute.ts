@@ -33,4 +33,15 @@ threedUploadRoute.post('/upload', upload.single('model'), (req: Request, res: Re
   res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename });
 });
 
+// Serve static files from the 'public_threed' directory
+threedUploadRoute.use(express.static(path.join(__dirname, '../public_upload')));
+
+threedUploadRoute.get("/", async (req: Request, res: Response): Promise<void> => {
+  try {
+    res.sendFile('upload.html', { root: path.join(__dirname, '../public_upload') });
+  } catch (e: any) {
+    res.status(404).json({ "error": `error fetching: ${e}` });
+  }
+});
+
 export default threedUploadRoute;
