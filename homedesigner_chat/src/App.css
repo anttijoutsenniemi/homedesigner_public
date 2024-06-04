@@ -1,7 +1,9 @@
 /* src/App.css */
 
 *{
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
+  /* font-family: Helvetica, sans-serif; */
+  /* font-family: Verdana, sans-serif;  */
 }
 
 .chat-app-background {
