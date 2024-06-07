@@ -287,7 +287,6 @@ const getRandomRecommendations = async () => {
 
   let botAnswer : string = 'Here are some random furniture recommendations as requested!';
   //console.log("botanswr: ", botAnswer, "truevlaues: ", trueValues, "images: ", imageArray);
-  setLoading(false);
   handleOptionClick('Show recommendations', botAnswer, imageArray);
 }
 
@@ -342,14 +341,12 @@ const getRandomRecommendations = async () => {
             imageModeRef = true;
             break;
         case 'Give me chair suggestions that I can browse':
-            botResponseText = 'Alright, picking 10 chair suggestions for you at random...';
+            botResponseText = 'Alright, give me a second as I pick 10 chair suggestions for you at random...';
             getRandomRecommendations();
-            options = ['Start again', 'Give me chair suggestions that I can browse'];
             break;
         case 'Give me table suggestions that I can browse':
-            botResponseText = 'Alright, picking 10 table suggestions for you at random...';
+            botResponseText = 'Alright, give me a second as I pick 10 table suggestions for you at random...';
             getRandomRecommendations();
-            options = ['Start again', 'Give me table suggestions that I can browse'];
             break;
         case 'Error occured':
             botResponseText = 'Error occured fetching AI response';

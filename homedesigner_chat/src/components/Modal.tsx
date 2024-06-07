@@ -49,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, product
             {
               (product.threedModel)
               ? <div className='modal-option-button'>Open in 3D-view at home</div>
-              : <div className='modal-option-button'>Open in 3D-view at home (this particular model is not yet available in 3D)</div>
+              : <div><div className='modal-option-button'>Open in 3D-view at home</div> <p>This model is not yet available in 3D</p></div>
             }
             
           </a>
