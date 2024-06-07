@@ -419,7 +419,7 @@ function toggleDrawer() {
             (Array.isArray(message.image64))
             ? //paste recommendedation images
             <div className='chat-content'>
-              <img src="/icon.png" alt="Chatbot" className="chatbot-profile" />
+              <img src="/fargo_icon.png" alt="Chatbot" className="chatbot-profile" />
               <div>
                 <div className="chat-bubble" style={{marginBottom:'10px'}}>{message.text}</div>
                 {
@@ -526,7 +526,7 @@ function toggleDrawer() {
 
             : //paste normal chatbot message
             <div className="chat-content">
-              <img src="/icon.png" alt="Chatbot" className="chatbot-profile" />
+              <img src="/fargo_icon.png" alt="Chatbot" className="chatbot-profile" />
               <div>
                 <div className="chat-bubble" >{message.text}</div>
                 {
