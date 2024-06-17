@@ -397,11 +397,15 @@ function toggleDrawer() {
   return (
     <div className="chat-app-background">
       <div className='screen-wrapper'>
+
+        {/* App header */}
         <div className='app-header'><h1 className='header-title'>Homedesigner Assistant</h1>
         <div className='hamburger-menu' onClick={()=>toggleDrawer()}>
           &#9776;
         </div>
         </div>
+
+        {/* App drawer navigation, hidden in start */}
         <div className='drawer' id='drawer'>
         <button className='close-button' onClick={()=>toggleDrawer()}>Close &times;</button>
           <a href={`/threedroute`}>
@@ -411,6 +415,8 @@ function toggleDrawer() {
             <div className='modal-option-button' style={{color: 'white', marginTop: 10}}>Open Fargo Vintage & Design store</div>
           </a>
         </div>
+
+        {/* Start of app chat */}
       <div className="chat-wrapper">
       {messages.map((message) => (
       <div key={message.id} className={`chat-message ${message.type}`}>
