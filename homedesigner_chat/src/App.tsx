@@ -101,7 +101,7 @@ export interface FurnitureData {
 const App: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     // Initial chat messages and options
-    { id: 1, type: 'chatbot', text: 'Welcome! I am your Homedesigner assistant, lets find furniture that matches your style together!', options: ['Help me find suitable furniture for my home.'] },
+    { id: 1, type: 'chatbot', text: 'Welcome! I am your Furnitize AI assistant, lets find furniture that matches your style together!', options: ['Help me find suitable furniture for my home.'] },
   ]);
   const [furnitureClass, setFurnitureClass] = useState<string>('Chairs');
   const [roomImage64, setRoomImage64] = useState<string | null>(null);
@@ -367,7 +367,7 @@ const getRandomRecommendations = async () => {
             options = ['Start again'];
             break;
         case 'Start again':
-            botResponseText = 'Welcome! I am your Homedesigner assistant, lets find furniture that matches your style together!';
+            botResponseText = 'Welcome! I am your Furnitize AI assistant, lets find furniture that matches your style together!';
             options = ['Help me find suitable furniture for my home.'];
             break;
         default:
@@ -399,7 +399,7 @@ function toggleDrawer() {
       <div className='screen-wrapper'>
 
         {/* App header */}
-        <div className='app-header'><h1 className='header-title'>Homedesigner Assistant</h1>
+        <div className='app-header'><h1 className='header-title'>Furnitize</h1>
         <div className='hamburger-menu' onClick={()=>toggleDrawer()}>
           &#9776;
         </div>
