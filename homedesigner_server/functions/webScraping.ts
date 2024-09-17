@@ -19,7 +19,7 @@ export async function scrapeWebsite(url: string): Promise<Product[]> {
     let lastIndex : number = 0;
     let currentIndex : number = 0;
 
-    while(hasMorePages){
+    while(hasMorePages && currentPage < 50){ //limit of 50 for scraper so no infiloops happen
         let response;
         if(currentPage > 1){
             response = await axios.get(`${url}?page=${currentPage}`);
