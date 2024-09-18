@@ -26,7 +26,9 @@ export interface ScrapingData {
 
 const chairModel = () => {
     const url : string = process.env.MONGO_ATLAS_URI ?? "";
-    const client = new MongoClient(url);
+    // const client = new MongoClient(url);
+    const client = new MongoClient(url, { maxPoolSize: 5, maxIdleTimeMS: 10000 }); //reduce the amount of connections
+
     const dbName = 'homedesignerData';
     const collection = 'chairCollection';
     const db = client.db(dbName);
