@@ -18,8 +18,9 @@ export async function scrapeWebsite(url: string): Promise<Product[]> {
     let hasMorePages = true;
     let lastIndex : number = 0;
     let currentIndex : number = 0;
+    let duplicateFound = false; // flag to stop the outer loop
 
-    while(hasMorePages && currentPage < 50){ //limit of 50 for scraper so no infiloops happen
+    while(hasMorePages && currentPage < 50 && !duplicateFound){ //limit of 50 for scraper so no infiloops happen
         let response;
         if(currentPage > 1){
             response = await axios.get(`${url}?page=${currentPage}`);
@@ -60,13 +61,22 @@ export async function scrapeWebsite(url: string): Promise<Product[]> {
                     productInfoObject['productUrl'] = 'https://fargovintage.fi' + productUrl;
                 }
         
-                products.push(productInfoObject);
+                // Check if the product is already in the array to prevent duplicates
+                if (!products.some(product => product.productUrl === productInfoObject.productUrl)) {
+                    products.push(productInfoObject);
+                }
+                else{
+                    duplicateFound = true; // Set flag if duplicate found
+                    return false; // Break out of the `each` loop
+                }
             } 
         });
 
-        const hasNextPage = $('.pagination').find('.next').length > 0; //this checks if the html has button for next page. if true we scrape all the pages
-        hasMorePages = hasNextPage;
-        currentPage++
+        if(!duplicateFound){        
+            const hasNextPage = $('.pagination').find('.next').length > 0; //this checks if the html has button for next page. if true we scrape all the pages
+            hasMorePages = hasNextPage;
+            currentPage++
+        }
     }
     return products;
 }
