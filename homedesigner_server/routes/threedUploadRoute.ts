@@ -1,14 +1,21 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import multer, { FileFilterCallback } from 'multer';
-import { Express } from 'express-serve-static-core';
+import modelInfo from '../dbModels/modelInfoModel';
+
+const modelInfoModule = modelInfo();
 
 const threedUploadRoute: express.Router = express.Router();
+
+const capitalizeFirstCharacter = (string : string) => {
+  if (!string) return ''; // Handle empty or undefined strings
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 // Configure Multer storage and file filter
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void): void => {
-    cb(null, path.join(__dirname, '../public_threed')); // Destination folder for uploaded files
+    cb(null, path.join(__dirname, '../public_threed/scripts/3d')); // Destination folder for uploaded files
   },
   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void): void => {
     cb(null, file.originalname); // Keep original file name
@@ -16,24 +23,31 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback | any): void => {
-  if (file.mimetype === 'model/gltf-binary') {
-    cb(null, true); // Accept .glb files
+  const allowedMimeTypes = ['model/gltf-binary', 'application/octet-stream'];
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    cb(null, true);
   } else {
-    cb(new Error('Only .glb files are allowed'), false); // Reject other files
+    cb(new Error('Only .glb files are allowed'), false);
   }
 };
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 // Route to handle .glb file upload
-threedUploadRoute.post('/upload', upload.single('model'), (req: Request, res: Response) => {
+threedUploadRoute.post('/upload', upload.single('model'), async (req: Request, res: Response) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded or incorrect file type' });
   }
+  let modelNameString = req.file.filename;
+  let simpleName = path.parse(modelNameString).name.toString();
+  let newModelInfoObject = {  displayTitle: capitalizeFirstCharacter(simpleName), 
+                              htmlIdentifier: simpleName
+                           }
+  await modelInfoModule.addData(newModelInfoObject);
   res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename });
 });
 
-// Serve static files from the 'public_threed' directory
+// Serve static files from the 'public_upload' directory
 threedUploadRoute.use(express.static(path.join(__dirname, '../public_upload')));
 
 threedUploadRoute.get("/", async (req: Request, res: Response): Promise<void> => {

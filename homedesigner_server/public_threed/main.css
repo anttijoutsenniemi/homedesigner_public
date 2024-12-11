@@ -13,6 +13,7 @@ body {
     left: 0;
     background-color: #111;
     overflow-x: hidden;
+    overflow-y: scroll;
     transition: 0.5s;
     padding-top: 60px;
     /* overflow-y: scroll; does not seem to work properly, perhaps a tags dont get recognised in right dimensions*/

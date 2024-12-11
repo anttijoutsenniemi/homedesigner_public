@@ -2,10 +2,12 @@ import express from 'express';
 import chairModel from '../dbModels/chairModel';
 import tableModel from '../dbModels/tableModel';
 import threedModels from '../dbModels/threedModels';
+import modelInfo from '../dbModels/modelInfoModel';
 
 const chairModule = chairModel();
 const tableModule = tableModel();
 const threedModule = threedModels();
+const modelInfoModule = modelInfo();
 
 const apiRoute : express.Router = express.Router();
 
@@ -52,5 +54,27 @@ apiRoute.get("/fetchThreedModels", async (req : express.Request, res : express.R
     }
 });
 
+apiRoute.post("/addmodeldata", async (req : express.Request, res : express.Response) : Promise<void> => { 
+    try {
+        if(req.body.newModelInfoObject){
+            let data = await modelInfoModule.addData(req.body.newModelInfoObject);
+            res.status(200).json({ "ok" : "success"});
+        }
+        else{
+            res.status(404).json({ "error" : "no data or wrong data"});
+        }
+    } catch (e : any) {
+        res.status(404).json({ "error" : `error fetching: ${e}` });
+    }
+});
+
+apiRoute.post("/fetchmodeldata", async (req : express.Request, res : express.Response) : Promise<void> => { 
+    try {
+        let data = await modelInfoModule.fetchData();
+        res.status(200).json(data);
+    } catch (e : any) {
+        res.status(404).json({ "error" : `error fetching: ${e}` });
+    }
+});
 
 export default apiRoute;

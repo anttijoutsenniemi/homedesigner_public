@@ -8,6 +8,7 @@ import threedroute from "./routes/threedroute";
 import aiRoute from "./routes/aiRoute";
 import apiRoute from "./routes/apiRoute";
 import threedUploadRoute from "./routes/threedUploadRoute";
+import modelInfoRoute from "./routes/modelInfoRoute";
 import scrapingRoute from "./routes/scrapingRoute";
 import { setupCronJobs } from "./functions/scheduledFunctions";
 import path from 'path';
@@ -47,7 +48,9 @@ const cspConfig = {
     scriptSrc: [
       "'self'",
       "https://ajax.googleapis.com",
-      "'sha256-zUmoJ0KpX3OdX9NzxeqDMx8bMlJ20C+luSCKq8owGgs='" //hash for importmap in index.html
+      "'sha256-zUmoJ0KpX3OdX9NzxeqDMx8bMlJ20C+luSCKq8owGgs='", //hash for importmap in index.html
+      "'sha256-2dpk+j/4G2wyfCiZtXdMB0Yr1Zc6OIKPsOc6hvj+buc='", //hash for 3d file upload
+      "'sha256-YEXsgeXDy4boWeCnnhdPTHFdyE3G8DB7kictJ+BGoOI='" //hash for script fetching modelinfo
     ],
     connectSrc: ["'self'", "blob:", "https://fargovintage.fi"],
     imgSrc: ["'self'", "https://fargovintage.fi", "data:"]
@@ -73,8 +76,9 @@ app.use(express.static('public_chat'));
 app.use("/threedroute/", threedroute);
 app.use("/airoute/", authenticate, aiRoute);
 app.use("/apiroute", authenticate, apiRoute);
-//app.use("/threeduploadroute", authenticateAdmin, threedUploadRoute);
-//app.use("/scrapingroute/", scrapingRoute);
+app.use("/threeduploadroute", authenticateAdmin, threedUploadRoute);
+app.use("/modelinforoute", modelInfoRoute);
+// app.use("/scrapingroute/", scrapingRoute);
 
 app.get("/", (req: Request, res: Response) => {
   try {
