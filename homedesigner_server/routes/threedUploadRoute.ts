@@ -15,7 +15,8 @@ const capitalizeFirstCharacter = (string : string) => {
 // Configure Multer storage and file filter
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void): void => {
-    cb(null, path.join(__dirname, '../public_threed/scripts/3d')); // Destination folder for uploaded files
+    // cb(null, path.join(__dirname, '../public_threed/scripts/3d')); // local Destination folder for uploaded files
+    cb(null, '/public_threed/scripts/3d'); // cloud test Destination folder for uploaded files
   },
   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void): void => {
     cb(null, file.originalname); // Keep original file name
@@ -51,12 +52,12 @@ threedUploadRoute.post('/upload', upload.single('model'), async (req: Request, r
 // threedUploadRoute.use(express.static(path.join(__dirname, '../public_upload')));
 threedUploadRoute.use(express.static('public_upload'));
 
-threedUploadRoute.get("/", async (req: Request, res: Response): Promise<void> => {
-  try {
-    res.sendFile('index.html', { root: path.join(__dirname, '../public_upload') });
-  } catch (e: any) {
-    res.status(404).json({ "error": `error fetching: ${e}` });
-  }
-});
+// threedUploadRoute.get("/", async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     res.sendFile('index.html', { root: path.join(__dirname, '../public_upload') });
+//   } catch (e: any) {
+//     res.status(404).json({ "error": `error fetching: ${e}` });
+//   }
+// });
 
 export default threedUploadRoute;
