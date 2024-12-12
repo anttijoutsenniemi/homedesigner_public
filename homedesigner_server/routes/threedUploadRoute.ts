@@ -53,7 +53,7 @@ threedUploadRoute.use(express.static('public_upload'));
 
 threedUploadRoute.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    res.sendFile('upload.html', { root: path.join(__dirname, '../public_upload') });
+    res.sendFile('index.html', { root: path.join(__dirname, '../public_upload') });
   } catch (e: any) {
     res.status(404).json({ "error": `error fetching: ${e}` });
   }
