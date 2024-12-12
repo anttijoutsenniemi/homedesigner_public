@@ -48,7 +48,8 @@ threedUploadRoute.post('/upload', upload.single('model'), async (req: Request, r
 });
 
 // Serve static files from the 'public_upload' directory
-threedUploadRoute.use(express.static(path.join(__dirname, '../public_upload')));
+// threedUploadRoute.use(express.static(path.join(__dirname, '../public_upload')));
+threedUploadRoute.use(express.static('public_upload'));
 
 threedUploadRoute.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
