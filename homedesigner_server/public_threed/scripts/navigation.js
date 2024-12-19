@@ -29,54 +29,14 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 
-// // Function to fetch and populate the sidenav
-// async function populateSidenav() {
-//   try {
-//     console.log("juu");
-//     const response = await fetch('/modelinforoute/fetchmodeldata');
-//     if (!response.ok) {
-//       throw new Error('Failed to fetch sidenav data');
-//     }
-//     const data = await response.json();
+document.addEventListener("DOMContentLoaded", function () {
+  const infoBtn = document.getElementById("info-btn");
+  const infoText = document.getElementById("info-text");
+  const arrow = document.getElementById("arrow");
 
-//     // Get the sidenav container
-//     const sidenav = document.getElementById('mySidenav');
-
-//     // // Clear existing content (if needed)
-//     // sidenav.innerHTML = `
-//     // 	<a href="javascript:void(0)" class="closebtn" id="closeNavBtn">&times;</a>
-//     // `;
-
-//     // Populate the sidenav with fetched data
-//     data.forEach(item => {
-//       const link = document.createElement('a');
-//       link.className = 'ar-object';
-//       link.id = item.htmlIdentifier;
-//       link.href = '#';
-//       link.textContent = item.displayTitle;
-//       sidenav.appendChild(link);
-//     });
-
-//     // Add event listener to the sidenav for delegation
-//     sidenav.addEventListener('click', (event) => {
-//       if (event.target && event.target.classList.contains('ar-object')) {
-//         // Close the sidenav
-//         document.getElementById("mySidenav").style.width = "0";
-
-//         // Load the model
-//         const id = event.target.id; // Get the ID of the clicked element
-//         loadModel(id); // Call the loadModel function with the ID
-//       }
-//     });
-
-//     // Add event listener for close button
-//     document.getElementById('closeNavBtn').addEventListener('click', () => {
-//       sidenav.style.width = "0";
-//     });
-//   } catch (error) {
-//     console.error('Error populating sidenav:', error);
-//   }
-// }
-
-// // Fetch and populate the sidenav on page load
-// window.addEventListener('DOMContentLoaded', populateSidenav);
+  infoBtn.addEventListener("click", () => {
+      const isHidden = infoText.style.display === "none";
+      infoText.style.display = isHidden ? "block" : "none";
+      arrow.textContent = isHidden ? "▼" : "▶"; // Toggle arrow direction
+  });
+});

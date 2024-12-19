@@ -24,6 +24,24 @@
 		<div id="content">
 			<div id="mySidenav" class="sidenav">
 				<a href="javascript:void(0)" class="closebtn" id="closeNavBtn">&times;</a>
+
+				<!-- Info Button and Text Box -->
+				<div id="info-container">
+					<button id="info-btn" class="info-btn">Info <span id="arrow">&#9654;</span></button>
+					<div id="info-text" class="info-text" style="display: none;">
+						Tervetuloa Furnitizen 3D -sisustusohjelmaan, jossa voit sovittaa kalusteita
+						kotonasi AR-teknologian keinoin. Kalusteiden sovittelu toimii vain mobiiliversiossa,
+						aloittaaksesi paina oikean alakulman "Start AR" -nappia ja suuntaa puhelimesi kamera 
+						kohti huoneen suoraviivaisia pintoja.
+						<br><br>
+						Valitse sivupalkista kaluste ja etsi kameralla lattialta kohta johon valkoinen kehä
+						ilmestyy kun kaluste on ladannut, paina "Place", jolloin kalusteen pitäisi piirtyä
+						näkymään pyöriteltäväksi.
+						<br><br>
+						Yleisimmin tuettu selain Chrome uusimmilla puhelinmalleilla.
+					</div>
+				</div>
+
 				<!-- <a class="ar-object" id="aalto-stool" href="#">Aalto stool</a> -->
 				<!-- <a class="ar-object" id="karuselli-arm-chair" href="#">Karuselli armchair</a>
 				<a class="ar-object" id="klaffipoyta-aalto" href="#">Klaffipöytä Aalto</a>
@@ -46,60 +64,6 @@
 		<script type="module" src="./scripts/navigation.js"></script>
 
 		<script type="module" src="./scripts/threed.js"></script>
-
-		<!-- <script>
-			// Function to fetch and populate the sidenav
-			async function populateSidenav() {
-				try {
-					console.log("juu");
-					const response = await fetch('/modelinforoute/fetchmodeldata');
-					if (!response.ok) {
-						throw new Error('Failed to fetch sidenav data');
-					}
-					const data = await response.json();
-
-					// Get the sidenav container
-					const sidenav = document.getElementById('mySidenav');
-
-					// // Clear existing content (if needed)
-					// sidenav.innerHTML = `
-					// 	<a href="javascript:void(0)" class="closebtn" id="closeNavBtn">&times;</a>
-					// `;
-
-					// Populate the sidenav with fetched data
-					data.forEach(item => {
-						const link = document.createElement('a');
-						link.className = 'ar-object';
-						link.id = item.htmlIdentifier;
-						link.href = '#';
-						link.textContent = item.displayTitle;
-						sidenav.appendChild(link);
-					});
-
-					// Add event listener to the sidenav for delegation
-					sidenav.addEventListener('click', (event) => {
-						if (event.target && event.target.classList.contains('ar-object')) {
-							// Close the sidenav
-							document.getElementById("mySidenav").style.width = "0";
-
-							// Load the model
-							const id = event.target.id; // Get the ID of the clicked element
-							loadModel(id); // Call the loadModel function with the ID
-						}
-					});
-
-					// Add event listener for close button
-					document.getElementById('closeNavBtn').addEventListener('click', () => {
-						sidenav.style.width = "0";
-					});
-				} catch (error) {
-					console.error('Error populating sidenav:', error);
-				}
-			}
-
-			// Fetch and populate the sidenav on page load
-			window.addEventListener('DOMContentLoaded', populateSidenav);
-		</script> -->
 
 	</body>
 </html>
