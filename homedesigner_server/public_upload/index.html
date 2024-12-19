@@ -7,6 +7,10 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      /* display: flex;
+      align-items: center;
+      justify-content: center; */
+
     }
     .drop-zone {
       max-width: 300px;
@@ -28,14 +32,159 @@
     #file-input {
       display: none;
     }
+    .list-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 10px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .title-medium {
+      text-align: center;
+    }
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .list-item:last-child {
+      border-bottom: none;
+    }
+    .editable {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .editable input {
+      width: 100%;
+      border: 1px solid #ccc;
+      padding: 4px;
+      border-radius: 3px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-left: 5px;
+      margin-right: 5px;
+      border: none;
+      background-color: #F49E4C;
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button.delete {
+      background-color: #9B2915;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
-  <div class="drop-zone" id="drop-zone">Drag & Drop your .glb file here </div>
+  <div class="list-container">
+    <h3 class="title-medium">3D -mallien ylläpito</h3>
+    <div id="modelList"></div>
+  </div>
+
+  <h3 class="title-medium">Uuden mallin lisäys</h1>
+  <div class="drop-zone" id="drop-zone">Raahaa .glb -mallisi tähän </div>
   <input type="file" id="file-input" accept=".glb">
   <!-- <button id="glbupload">Upload</button> -->
 
   <script>
+    //---------Edit and listings code------------//
+
+    async function fetchModelData() {
+      try {
+        const response = await fetch('/modelinforoute/fetchmodeldata');
+        if (!response.ok) throw new Error('Failed to fetch model data');
+        const modelData = await response.json();
+        renderModelList(modelData);
+      } catch (error) {
+        console.error(error);
+        alert('Error fetching model data.');
+      }
+    }
+
+    function renderModelList(data) {
+      const modelList = document.getElementById('modelList');
+      modelList.innerHTML = ''; // Clear the existing list
+
+      data.forEach((item, index) => {
+        const listItem = document.createElement('div');
+        listItem.className = 'list-item';
+
+        const editableDiv = document.createElement('div');
+        editableDiv.className = 'editable';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = item.displayTitle;
+        index = item.id;
+        editableDiv.appendChild(input);
+
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Tallenna nimi';
+        saveButton.onclick = () => saveModelData(index, input.value);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Poista';
+        deleteButton.className = 'delete';
+        deleteButton.onclick = () => deleteModelData(index);
+
+        listItem.appendChild(editableDiv);
+        listItem.appendChild(saveButton);
+        listItem.appendChild(deleteButton);
+
+        modelList.appendChild(listItem);
+      });
+    }
+
+    async function saveModelData(index, newTitle) {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = urlParams.get('user');
+        const response = await fetch('/modelinforoute/update-modeldata', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: index, newTitle, user }),
+        });
+        if (!response.ok) throw new Error('Failed to save model data');
+        alert('Document updated succesfully!');
+        await fetchModelData();
+      } catch (error) {
+        console.error(error);
+        alert('Error saving model data.');
+      }
+    }
+
+    async function deleteModelData(index) {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = urlParams.get('user');
+        const response = await fetch('/modelinforoute/delete-modeldata', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: index, user }),
+        });
+        if (!response.ok) throw new Error('Failed to delete model data');
+        alert('Document deleted succesfully!');
+        await fetchModelData();
+      } catch (error) {
+        console.error(error);
+        alert('Error deleting model data.');
+      }
+    }
+
+    // Fetch and render the list on page load
+    fetchModelData();
+
+    //---------UPLOAD CODE----------//
+
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     // const uploadButton = document.getElementById('glbupload');
@@ -85,6 +234,7 @@
           alert(`Error: ${data.error}`);
         } else {
           alert('File uploaded successfully');
+          fetchModelData();
         }
       })
       .catch(error => {

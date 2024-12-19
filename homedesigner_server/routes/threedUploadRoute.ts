@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import multer, { FileFilterCallback } from 'multer';
 import modelInfo from '../dbModels/modelInfoModel';
+import { v4 as uuidv4 } from 'uuid';
 
 const modelInfoModule = modelInfo();
 
@@ -11,6 +12,16 @@ const capitalizeFirstCharacter = (string : string) => {
   if (!string) return ''; // Handle empty or undefined strings
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+const sanitizeHtmlId = (name : string) => {
+  // Remove invalid characters and replace spaces with hyphens
+  let sanitized = name.replace(/[^a-zA-Z0-9\-_]/g, '').replace(/\s+/g, '-');
+  // Ensure it starts with a valid letter
+  if (!/^[a-zA-Z]/.test(sanitized)) {
+    sanitized = `${sanitized}`;
+  }
+  return sanitized.toLowerCase(); // Convert to lowercase
+};
 
 // Configure Multer storage and file filter
 const storage = multer.diskStorage({
@@ -41,11 +52,25 @@ threedUploadRoute.post('/upload', upload.single('model'), async (req: Request, r
   }
   let modelNameString = req.file.filename;
   let simpleName = path.parse(modelNameString).name.toString();
+  let sanitizedName = sanitizeHtmlId(simpleName);
   let newModelInfoObject = {  displayTitle: capitalizeFirstCharacter(simpleName), 
-                              htmlIdentifier: simpleName
+                              htmlIdentifier: sanitizedName,
+                              id: uuidv4()
                            }
   await modelInfoModule.addData(newModelInfoObject);
   res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename });
+});
+
+threedUploadRoute.use((req : any, res, next) => {
+  const authenticatedUser = req.auth.user; // The username from basic auth
+
+  // Check if the `user` query parameter already exists
+  if (authenticatedUser && req.query.user !== authenticatedUser) {
+    const redirectUrl = `/threeduploadroute?user=${encodeURIComponent(authenticatedUser)}`;
+    return res.redirect(redirectUrl);
+  }
+
+  next(); // Proceed to the next middleware or static file serving
 });
 
 // Serve static files from the 'public_upload' directory
