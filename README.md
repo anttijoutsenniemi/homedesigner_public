@@ -31,3 +31,6 @@ Furnitize is a full-stack application that integrates React, Node.js, Express, M
 
 ### Other Tools
 - **Web scraping**: To collect furniture data from the client’s website.
+
+### Other Info
+- Newest development in branch: demo1.0_experimental
