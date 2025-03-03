@@ -30,7 +30,8 @@ const storage = multer.diskStorage({
     // cb(null, '/public_threed/scripts/3d'); // cloud test Destination folder for uploaded files
   },
   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void): void => {
-    cb(null, file.originalname); // Keep original file name
+    let newName: string = sanitizeHtmlId(file.originalname);
+    cb(null, newName); // Keep original file name
   }
 });
 
