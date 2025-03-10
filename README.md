@@ -11,7 +11,7 @@ Furnitize is a full-stack application that integrates React, Node.js, Express, M
 
 ### AI Assistant Chat
 - Helps users discover furniture that matches their style preferences.
-- Uses **OpenAI models** and a **Euclidean distance ranking function** to recommend relevant products.
+- Uses **OpenAI models** and a **Boolean based ranking system** to recommend relevant products.
 - Furniture data is scraped from the client's website.
 
 ### 3D/AR Home Design
