@@ -1,0 +1,95 @@
+//// 1. Yleistä \\\\
+
+    Furnitize, alunperin Homedesigner auttaa käyttäjäänsä löytämään tyyliinsä sopivia kalusteita, joita voisi sitten
+    ideaalitilanteessa sovittaa kotona AR/3D -teknologian avulla. Koko teknologiaputki sovelluksessa toimii,
+    mutta jokaisen tuotteen integrointi AR-sovellukseen jäi projektissa vaiheeseen 3D-mallien saatavuuden vuoksi.
+
+    Github: https://github.com/anttijoutsenniemi/homedesigner_public 
+
+//// 2. Tekninen toimintaperiaate \\\\
+
+    Sovelluksessa tyyliä käsitellään boolean -tyylimuuttujien avulla. Kehittyneempi versio tekniikasta löytyy
+    Redecofinder sovelluksesta, katso redecofinder.txt. Muuten siis furnitizessa on sama idea tyylien kannalta,
+    mutta jokainen tyylimuuttuja on matalemman tarkkuuden boolean -muodossa esim. { dark: true, minimalistic: false }
+
+    Kun käyttäjä on löytänyt mieluisan kalusteen, aukeaa sitä klikkaamalla "Open in 3D view at home".
+    Nappia painamalla sovellus reitittää käyttäjän saman servun sisällä threed reittiin, ja saa url-parametrina
+    3D-mallin id:n, tässä kohtaa siis id voitaisiin napata jos sille löytyisi oma mallinsa ja näyttää kyseinen kaluste.
+
+    AR-setissä on monta sample mallia joita voi testailla. Sovellusta on parasta testailla valoisassa 
+    ja "suorakulmaisessa" ympäristössä. Kameran feedistä piirretään reaaliajassa 3D-gridiä joten pyyhe lattialla
+    voi häiritä liikaa jolloin pinnalle on vaikea asettaa 3D-malli.
+
+//// 3. Avainteknologiat ja arkkitehtuuri \\\\
+
+    MERN -stack + html + js into Docker container.
+
+    Sisältää kaksi eri fronttia: chat sovellus sekä 3D/AR-sovellus
+
+    1.Front-end Chat: REACT (TypeScript). 
+    - Koottu static-tiedostoiksi jotka tarjoillaan Node -palvelimella
+    - Kevyt autentikointi (username-password-pari jotka on buildattu fronttiin) 
+        käytännössä tämän tarkoitus on vain estää ulkopuolisten endpoint-bottien ja muiden vastaavien kutsut,
+        eikä olisi yksinään riittävä suojaus laajemman skaalan applikaatiossa, sillä tunnukset voi osaava tekijä
+        logata clienttiä ajaessa.
+    - Tärkein logiikka tapahtuu App.tsx/handleOptionClick(); -funktiossa.
+
+    2.Front-end 3D/AR: (Three.js, JS, HTML, CSS)
+    - Sovelluksen ensimmäistä versiota kehitettiin kansioon homedesigner_app,
+        tämän jälkeen kehitystä on jatkettu homedesigner_server/public_threed
+    - Tärkein logiikka tapahtuu scripts/threed.js
+    - Sovellusta ei erikseen tarvitse buildata, sillä node servu tarjoilee fileet suoraan public_threed kansiosta
+
+    3. Palvelin: Node, Express (TypeScript).
+    - AI-promptit ja openAI -kutsut
+    - Verkkokaupan scraping-skriptit (cheerio, axios)
+    - Scraping-datan perusteella tehdyt tekoälytyyliarvioinnit 
+    - Scraping- ja tyyliarviointiskriptit ajavat itsensä automaattisesti haluttuina ajankohtina
+        voidaan laittaa pois päältä kommentoimalla index.ts/setupCronJobs(); Huom. jos laitetaan
+        pois päältä sovellus jää käyttämään vanhaa dataa eikä siis enää päivitä uusimpia tuotteita käyttäjälle.
+    - Kaikkien automatisoitujen skriptien ensimmäinen ajokerta ja tietokannan täyttö n. 1000 tuotteelle
+        kustansi tekoälykuluissa 14.11.2024 n. 2 dollaria. Seuraavat ajokerrat tietenkin lisäilevät uusia tuotteita
+        muutamia ja harvoin joten kokonaistekoälykustannuksiksi tulee tuhannella aloitustuotteella noin. alle dollari
+        kuukaudessa.
+    - index.ts -löytyvä cspConfig yhdessä helmetin avulla sallivat vain servunsisäiset skriptit, kuvat ja lähteet.
+        configurointiin pitää lisätä uusia ehtoja, jos halutaan esim. käyttää muualta netistä tulevia kuvia.
+
+    4. Backend: MongoDB.
+    - tietokantaan tallentuu tuotetiedot ja kuvien linkit
+    - tyyliarvioinnit jokaisesta tuotteesta
+    - connectionsien määrää on koitettu vähentää clientconfiguroinnilla, näihin oleelliset jutut löytyy
+        server/dbModels
+
+//// 4. Käynnistysohjeet lokaaliin \\\\
+
+    Chat sovellus kansiossa homedesigner_chat, 
+    AR/3D-sovellus kansiossa homedesigner_app 
+    ja palvelin kansiossa homedesigner_server
+
+    Jotta saadaan uusin deployment koko sovelluksesta:
+
+    0. Luo env tiedosto sekä homedesigner_chat kansioon että homedesginer_server kansioon,
+        täytä tiedot tämän dokun lopussa olevien env examplejen mukaisesti, kuitenkin omilla tiedoillasi.
+    1. Aukaisee homedesigner_chat kansion terminaaliin
+    2. npm run build - komento buildaa React -sovelluksen homedesigner_chat/build kansioon
+    3. Siirrä uusin buildi homedesigner_server/public_chat kansion tiedostojen paikalle
+    4. Nyt uusin buildattu frontti toimii servun juuressa, sen voi käynnistää
+        lokaalissa avaamalla uuden terminaalin kansioon server ja ajamalla komennon
+        npm run dev
+    5. Nyt myös buildaamalla uusimman kontin /server kansiossa olevan Dockerfilen
+        mukaan saadaan toimiva kontti
+
+FRONT ENV EXAMPLE:
+
+REACT_APP_HTTP_BASIC_AUTH_USERNAME="replaceusername"
+REACT_APP_HTTP_BASIC_AUTH_PASSWORD="replacepassword"
+
+BACK ENV EXAMPLE:
+
+HTTP_BASIC_AUTH_USERNAME="replaceusername"
+HTTP_BASIC_AUTH_PASSWORD="replacepassword"
+HTTP_BASIC_AUTH_USERNAME2="replaceusername"
+HTTP_BASIC_AUTH_PASSWORD2="replacepassword"
+OPENAI_API_KEY_OLD=replaceapikey
+OPENAI_API_KEY=replaceapikey
+MONGO_ATLAS_URI="replacemongouri"
