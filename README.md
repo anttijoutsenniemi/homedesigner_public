@@ -2,6 +2,8 @@
 
 ## Overview
 
+See instructions on how to run it on instructions.txt
+
 Furnitize is a full-stack application that integrates React, Node.js, Express, MongoDB, and advanced AI technologies to provide a seamless furniture shopping and design experience. The app offers two main features:
 
 1. **AI-Powered Furniture Search**: An AI assistant helps users find matching furniture from a client's website by asking style-relevant questions.
