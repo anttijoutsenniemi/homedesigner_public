@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import clientPublic from './../clientPublic.json';
 
 interface Product {
     pictureUrl: string;
@@ -26,9 +27,9 @@ async function scrapeWebsite(url: string): Promise<Product[]> {
                 const url = linkElement.getAttribute('href') ?? '';
                 
                 items.push({
-                    pictureUrl: pictureUrl.startsWith('http') ? pictureUrl : `https://fargovintage.fi${pictureUrl}`,
+                    pictureUrl: pictureUrl.startsWith('http') ? pictureUrl : `${clientPublic.webStoreUrl}${pictureUrl}`,
                     title,
-                    url: `https://fargovintage.fi${url}`
+                    url: `${clientPublic.webStoreUrl}${url}`
                 });
             }
         });
@@ -40,6 +41,6 @@ async function scrapeWebsite(url: string): Promise<Product[]> {
     return products;
 }
 
-scrapeWebsite('https://fargovintage.fi/en/collections/tables')
-    .then(products => console.log(products))
-    .catch(error => console.error('Error scraping website:', error));
+// scrapeWebsite(`${clientPublic.webStoreUrl}/en/collections/tables`)
+//     .then(products => console.log(products))
+//     .catch(error => console.error('Error scraping website:', error));

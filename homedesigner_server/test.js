@@ -1,4 +1,4 @@
-
+import clientPublic from './clientPublic.json';
 
 async function checkUrlExists(url) {
     try {
@@ -10,6 +10,6 @@ async function checkUrlExists(url) {
 }
 
 (async () => {
-    let check = await checkUrlExists('https://fargovintage.fi/en/collections/seating/products/baarijakkarat-malli-64-2-kpl-alvar-aalto-artek-1900-luvun-loppupuol');
+    let check = await checkUrlExists(clientPublic.webStoreUrl);
     console.log(check);
 })();

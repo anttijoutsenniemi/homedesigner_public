@@ -7,6 +7,7 @@ import { checkUrl, fetchSeatingData, fetchTablesData } from './components/ApiFet
 import { TailSpin } from 'react-loader-spinner';
 import chairMap from './assets/json/chairMap.json';
 import tableMap from './assets/json/tableMap.json';
+import clientPublic from './assets/clientPublic.json';
 
 export interface ChatMessage {
   id: number;
@@ -411,8 +412,8 @@ function toggleDrawer() {
           <a href={`/threedroute`}>
             <div className='modal-option-button' style={{color: 'white', marginTop: 10}}>Open 3D/AR -app</div>
           </a>
-          <a href={`https://fargovintage.fi/en`}>
-            <div className='modal-option-button' style={{color: 'white', marginTop: 10}}>Open Fargo Vintage & Design store</div>
+          <a href={clientPublic.webStoreUrl}>
+            <div className='modal-option-button' style={{color: 'white', marginTop: 10}}>Open  webstore</div>
           </a>
         </div>
 
@@ -425,7 +426,7 @@ function toggleDrawer() {
             (Array.isArray(message.image64))
             ? //paste recommendedation images
             <div className='chat-content'>
-              <img src="/fargo_icon.png" alt="Chatbot" className="chatbot-profile" />
+              <img src="/logo192.png" alt="Chatbot" className="chatbot-profile" />
               <div>
                 <div className="chat-bubble" style={{marginBottom:'10px'}}>{message.text}</div>
                 {
@@ -532,7 +533,7 @@ function toggleDrawer() {
 
             : //paste normal chatbot message
             <div className="chat-content">
-              <img src="/fargo_icon.png" alt="Chatbot" className="chatbot-profile" />
+              <img src="/logo192.png" alt="Chatbot" className="chatbot-profile" />
               <div>
                 <div className="chat-bubble" >{message.text}</div>
                 {

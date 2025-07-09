@@ -70,6 +70,8 @@
 
     0. Luo env tiedosto sekä homedesigner_chat kansioon että homedesginer_server kansioon,
         täytä tiedot tämän dokun lopussa olevien env examplejen mukaisesti, kuitenkin omilla tiedoillasi.
+    0.5. Tarkista ja muuta käyttämäsi verkkokaupan osoite clientPublic tiedostoihin sekä servun että react chat sovelluksen puolelle
+    Katso myös että kaikki linkit missä clientpublic on mainittu ovat oikein sinun use caseesi (esim VSCodessa haku toiminnolla)
     1. Aukaisee homedesigner_chat kansion terminaaliin
     2. npm run build - komento buildaa React -sovelluksen homedesigner_chat/build kansioon
     3. Siirrä uusin buildi homedesigner_server/public_chat kansion tiedostojen paikalle

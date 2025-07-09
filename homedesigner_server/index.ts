@@ -12,6 +12,7 @@ import modelInfoRoute from "./routes/modelInfoRoute";
 import scrapingRoute from "./routes/scrapingRoute";
 import { setupCronJobs } from "./functions/scheduledFunctions";
 import path from 'path';
+import clientPublic from './clientPublic.json';
 
 const app : Application = express();
 
@@ -53,8 +54,8 @@ const cspConfig = {
       "'sha256-YEXsgeXDy4boWeCnnhdPTHFdyE3G8DB7kictJ+BGoOI='", //hash for script fetching modelinfo
       "'sha256-kF6PqBm+NqLwDrRh4RUctoaQjqmKV3NOrU6R3PG/lMY='" //hash for scripts on 3d model maintenance
     ],
-    connectSrc: ["'self'", "blob:", "https://fargovintage.fi"],
-    imgSrc: ["'self'", "https://fargovintage.fi", "data:"]
+    connectSrc: ["'self'", "blob:", clientPublic.webStoreUrl],
+    imgSrc: ["'self'", clientPublic.webStoreUrl, "data:"]
   },
 };
 

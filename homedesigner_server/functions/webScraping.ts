@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cheerio, { load } from 'cheerio';
+import clientPublic from './../clientPublic.json';
 
 export interface Product {
     id: number;
@@ -58,7 +59,7 @@ export async function scrapeWebsite(url: string): Promise<Product[]> {
         
                 let productUrl = $(el).find('a').attr('href');
                 if(productUrl){
-                    productInfoObject['productUrl'] = 'https://fargovintage.fi' + productUrl;
+                    productInfoObject['productUrl'] = clientPublic.webStoreUrl + productUrl;
                 }
         
                 // Check if the product is already in the array to prevent duplicates
