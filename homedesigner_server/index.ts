@@ -68,7 +68,8 @@ const port = process.env.PORT || 8000;
 /* Cors setup */
 app.use(cors());
 
-setupCronJobs(); //start scheduled functions
+//uncomment this to start scheduled functions when server is running
+//setupCronJobs(); //start scheduled functions
 
 app.use(express.json({limit: '50mb'})); //receive req.body
 
